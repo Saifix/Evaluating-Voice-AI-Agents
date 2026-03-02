@@ -6,7 +6,7 @@
  */
 import Icon from './Icon'
 
-export default function AudioPlayer({ ready }) {
+export default function AudioPlayer({ ready, runNum }) {
   if (!ready) {
     return (
       <div className="audio-player">
@@ -18,7 +18,8 @@ export default function AudioPlayer({ ready }) {
     )
   }
 
-  const src = `/api/audio?t=${Date.now()}`
+  const q   = runNum ? `?run=${runNum}&t=${Date.now()}` : `?t=${Date.now()}`
+  const src = `/api/audio${q}`
 
   return (
     <div className="audio-player">

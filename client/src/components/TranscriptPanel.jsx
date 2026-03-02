@@ -9,15 +9,18 @@ import { useEffect, useRef } from 'react'
 
 const LABEL = { nova: 'Agent', sage: 'Caller', agent: 'Agent', caller: 'Caller' }
 
-export default function TranscriptPanel({ entries, phase }) {
-  const bottomRef = useRef(null)
+export default function TranscriptPanel({ entries, phase, compact = false }) {
+  const listRef = useRef(null)
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    // Scroll the list container itself — not scrollIntoView which scrolls the page
+    if (listRef.current) {
+      listRef.current.scrollTop = listRef.current.scrollHeight
+    }
   }, [entries])
 
   return (
-    <div className="transcript-panel">
+    <div className={`transcript-panel${compact ? ' transcript-panel--compact' : ''}`}>
       <div className="transcript-header">
         <span className="transcript-title">Live Transcript</span>
         <div className="transcript-legend">
@@ -25,7 +28,7 @@ export default function TranscriptPanel({ entries, phase }) {
           <span className="legend-dot caller">Caller (Sage)</span>
         </div>
       </div>
-      <div className="transcript-list">
+      <div className="transcript-list" ref={listRef}>
         {entries.length === 0 ? (
           <p className="transcript-empty">
             {phase === 'idle' ? 'Press Start Simulation to begin.' : 'Waiting for first turn…'}
@@ -43,7 +46,6 @@ export default function TranscriptPanel({ entries, phase }) {
             </div>
           ))
         )}
-        <div ref={bottomRef} />
       </div>
     </div>
   )

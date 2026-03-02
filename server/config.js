@@ -15,13 +15,25 @@ const DEFAULTS = {
   // ── OpenAI credentials ────────────────────────────────────────────
   openaiApiKey: '',
 
+  // ── Simulation runs ───────────────────────────────────────────────
+  // How many parallel simulations to launch per Start click (1 – 5).
+  simCount: 1,
+
   // ── Conversation length ───────────────────────────────────────────
   // Number of Sage replies before the conversation wraps up.
   // Nova always gets one extra farewell turn after Sage says goodbye.
   maxExchanges: 10,
 
   // ── Nova (GPT-4o Realtime) ────────────────────────────────────────
+  novaModel: 'gpt-4o-realtime-preview',
   novaVoice: 'alloy',
+
+  // ── Nova Tools (Realtime function calling) ────────────────────────
+  // Each tool: { id, name, description, parameters (JSON schema string),
+  //              execution: 'static'|'http',
+  //              staticResponse (JSON string),
+  //              httpMethod, httpUrl, httpHeaders (JSON string) }
+  novaTools: [],
 
   novaInstructions:
     'You are Nova, an AI-powered helpdesk agent for Joblogic Field Service Management. ' +
@@ -53,6 +65,9 @@ const DEFAULTS = {
   ttsModel:   'tts-1',
   sttModel:   'whisper-1',
 
+  // ── Evaluation model (used by both promptfoo provider and OpenAI fallback) ─
+  evalModel: 'gpt-4.1',
+
   sageInstructions:
     'You are simulating a realistic human customer calling a helpdesk to report a ' +
     'maintenance issue. Do NOT break character or reveal you are an AI.\n\n' +
@@ -72,6 +87,19 @@ const DEFAULTS = {
     '- On your final reply ONLY (after hearing the reference), append exactly "<<END>>" at the end\n' +
     '- NEVER use "<<END>>" in any earlier reply\n' +
     '- After MAX_EXCHANGES exchanges force-end the conversation with <<END>>',
+
+  // ── Evaluation criteria ───────────────────────────────────────────
+  // Each criterion: { id, name, description, passMark (0-10) }
+  criteria: [
+    { id: 'greeting',  name: 'Professional Greeting',  passMark: 7, description: 'Did Nova answer the call professionally, introduce themselves or the company (Joblogic), and clearly offer to help the caller?' },
+    { id: 'issue',     name: 'Issue Description',       passMark: 7, description: 'Did Nova successfully gather a clear and complete description of the maintenance issue being reported by the caller?' },
+    { id: 'site',      name: 'Site & Location',         passMark: 7, description: 'Did Nova obtain the site name and/or address where the maintenance issue is occurring?' },
+    { id: 'contact',   name: 'Contact Details',         passMark: 7, description: "Did Nova capture the caller's full name and contact phone number (or email) during the call?" },
+    { id: 'priority',  name: 'Priority Assessment',     passMark: 7, description: 'Did Nova assess and confirm the urgency or priority level of the reported issue (Emergency / High / Medium / Low)?' },
+    { id: 'confirm',   name: 'Details Confirmation',    passMark: 7, description: 'Did Nova read back or confirm all captured details (caller name, site, issue, priority) to the caller before closing?' },
+    { id: 'reference', name: 'Job Reference',           passMark: 7, description: 'Did Nova confirm the job has been logged and provide a job reference number (format JL-XXXXX or similar) to the caller?' },
+    { id: 'quality',   name: 'Overall Quality',         passMark: 7, description: "Evaluate the overall call quality: professionalism, tone, empathy, efficiency, and whether the caller's issue was fully resolved by end of call." },
+  ],
 };
 
 function load() {

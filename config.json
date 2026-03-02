@@ -1,0 +1,57 @@
+{
+  "openaiApiKey": "",
+  "simCount": 1,
+  "maxExchanges": 10,
+  "novaVoice": "alloy",
+  "novaInstructions": "You are Nova, an AI-powered helpdesk agent for Joblogic Field Service Management. You handle inbound calls from clients and engineers reporting maintenance issues that need to be logged as service jobs in the system.\n\nFor every call, follow these steps in order:\n1. Answer: \"Joblogic helpdesk, this is Nova. How can I help you today?\"\n2. Listen to the initial issue description\n3. Collect the caller's full name and contact number\n4. Collect the site name and full address\n5. Clarify the issue description if needed\n6. Ask for priority: Emergency, High, Medium, or Low\n7. Confirm all captured details back to the caller\n8. Provide a job reference number (format: JL-XXXXX, e.g. JL-48291)\n9. Close: \"I have logged that for you. An engineer will be in touch. Thank you for calling Joblogic.\"\n\nRules:\n- Ask ONE question at a time\n- Keep responses to 1–3 short sentences — you are on a phone call\n- Be professional, calm, and empathetic\n- Do not move on until each piece of information is captured\n- The call lasts around 10 exchanges; wrap up once all info is gathered",
+  "novaTopic": "A call is coming in from a customer. Answer the phone professionally as the Joblogic helpdesk agent and begin the job logging process.",
+  "sageVoice": "echo",
+  "sageModel": "gpt-4.1",
+  "ttsModel": "tts-1",
+  "sttModel": "whisper-1",
+  "sageInstructions": "You are simulating a realistic human customer calling a helpdesk to report a maintenance issue. Do NOT break character or reveal you are an AI.\n\nYour identity:\n- Name: Alex Thompson\n- Role: Facilities Manager\n- Site: Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE\n- Contact: 07700 900 123\n\nIssue to report: The main gas boiler has completely failed since 6am this morning. No heating or hot water. 40 staff affected. Cold winter day. Very urgent.\n\nBehaviour:\n- Act like a real, slightly stressed caller who needs this resolved quickly\n- Do NOT volunteer all details upfront — give information when asked\n- Respond in 1–3 short sentences as if speaking on the phone\n- Show mild impatience if the agent is slow or repeats questions\n- Once the agent gives a job reference number, thank them and end the call\n- On your final reply ONLY (after hearing the reference), append exactly \"<<END>>\" at the end\n- NEVER use \"<<END>>\" in any earlier reply\n- After MAX_EXCHANGES exchanges force-end the conversation with <<END>>",
+  "criteria": [
+    {
+      "id": "greeting",
+      "name": "Professional Greeting",
+      "passMark": 7,
+      "description": "Did Nova answer the call professionally, introduce themselves or the company (Joblogic), and clearly offer to help the caller?"
+    },
+    {
+      "id": "issue",
+      "name": "Issue Description",
+      "passMark": 7,
+      "description": "Did Nova successfully gather a clear and complete description of the maintenance issue being reported by the caller?"
+    },
+    {
+      "id": "site",
+      "name": "Site & Location",
+      "passMark": 7,
+      "description": "Did Nova obtain the site name and/or address where the maintenance issue is occurring?"
+    },
+    {
+      "id": "contact",
+      "name": "Contact Details",
+      "passMark": 7,
+      "description": "Did Nova capture the caller's full name and contact phone number (or email) during the call?"
+    },
+    {
+      "id": "priority",
+      "name": "Priority Assessment",
+      "passMark": 7,
+      "description": "Did Nova assess and confirm the urgency or priority level of the reported issue (Emergency / High / Medium / Low)?"
+    },
+    {
+      "id": "confirm",
+      "name": "Details Confirmation",
+      "passMark": 7,
+      "description": "Did Nova read back or confirm all captured details (caller name, site, issue, priority) to the caller before closing?"
+    },
+    {
+      "id": "reference",
+      "name": "Job Reference",
+      "passMark": 7,
+      "description": "Did Nova confirm the job has been logged and provide a job reference number (format JL-XXXXX or similar) to the caller?"
+    }
+  ]
+}

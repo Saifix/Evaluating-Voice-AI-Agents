@@ -25,6 +25,7 @@
 const http      = require('http');
 const fs        = require('fs');
 const path      = require('path');
+const vm        = require('vm');
 const WebSocket = require('ws');
 const OpenAI    = require('openai');
 
@@ -54,6 +55,7 @@ class SageAgent {
   constructor(emit, cfg) {
     this.emit          = emit;
     this.cfg           = cfg;
+    this.outputDir     = cfg.outputDir || OUTPUT_DIR;
     this.busy          = false;
     this.exchangeCount = 0;
     this.convHistory   = [];
@@ -74,7 +76,7 @@ class SageAgent {
   listen() {
     return new Promise((resolve) => {
       this.server = http.createServer((req, res) => this._handleRequest(req, res));
-      this.server.listen(SAGE_PORT, () => {
+      this.server.listen(this.cfg.sagePcPort || SAGE_PORT, () => {
         this.emit({ type: 'log', text: '[Sage] Relay server ready' });
         resolve();
       });
@@ -83,7 +85,12 @@ class SageAgent {
 
   stop() {
     this.stopped = true;
-    if (this.server) this.server.close();
+    if (this.server) {
+      if (typeof this.server.closeAllConnections === 'function')
+        this.server.closeAllConnections();
+      this.server.close();
+      this.server = null;
+    }
   }
 
   _handleRequest(req, res) {
@@ -121,7 +128,7 @@ class SageAgent {
     if (!novaText) {
       this.emit({ type: 'status', speaker: 'sage', text: 'Transcribing Nova…' });
       const pcmBuf = Buffer.concat(audioChunks.map(b => Buffer.from(b, 'base64')));
-      const tmp    = path.join(OUTPUT_DIR, '_tmp_nova.wav');
+      const tmp    = path.join(this.outputDir, `_tmp_nova_${Date.now()}.wav`);
       fs.writeFileSync(tmp, buildWav(pcmBuf));
       const tx = await this.client.audio.transcriptions.create({
         file: fs.createReadStream(tmp), model: cfg.sttModel,
@@ -185,8 +192,9 @@ class SageAgent {
       const n = s => parseInt((s.match(/\[Turn (\d+)\]/) || [0, 0])[1], 10);
       return n(a) - n(b);
     });
+    if (!fs.existsSync(this.outputDir)) fs.mkdirSync(this.outputDir, { recursive: true });
     fs.writeFileSync(
-      path.join(OUTPUT_DIR, 'transcript.txt'),
+      path.join(this.outputDir, 'transcript.txt'),
       sorted.join('\n\n') + '\n',
       'utf8'
     );
@@ -197,7 +205,7 @@ class SageAgent {
     return new Promise((resolve) => {
       const body = JSON.stringify({ audio: chunks, turn, isEnd });
       const req  = http.request(
-        { host: 'localhost', port: NOVA_PORT, path: '/audio', method: 'POST',
+        { host: 'localhost', port: this.cfg.novaPcPort || NOVA_PORT, path: '/audio', method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) } },
         () => {
           this.emit({ type: 'log', text: `[Sage] Sent to Nova (exchange ${turn}${isEnd ? ' — END' : ''})` });
@@ -224,6 +232,7 @@ class NovaAgent {
   constructor(emit, cfg) {
     this.emit            = emit;
     this.cfg             = cfg;
+    this.outputDir       = cfg.outputDir || OUTPUT_DIR;
     this.ws              = null;
     this.server          = null;
     this.busy            = false;
@@ -240,11 +249,11 @@ class NovaAgent {
   // Start HTTP server + connect to OpenAI Realtime
   start() {
     return new Promise((resolve, reject) => {
-      if (!fs.existsSync(OUTPUT_DIR)) fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+      if (!fs.existsSync(this.outputDir)) fs.mkdirSync(this.outputDir, { recursive: true });
 
       // HTTP server first (Sage will try to contact us)
       this.server = http.createServer((req, res) => this._handleRequest(req, res));
-      this.server.listen(NOVA_PORT, () => {
+      this.server.listen(this.cfg.novaPcPort || NOVA_PORT, () => {
         this.emit({ type: 'log', text: '[Nova] Relay server ready, connecting to OpenAI…' });
         this._connectRealtime(resolve, reject);
       });
@@ -254,13 +263,19 @@ class NovaAgent {
   stop() {
     this.stopped = true;
     if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.close();
-    if (this.server) this.server.close();
+    if (this.server) {
+      if (typeof this.server.closeAllConnections === 'function')
+        this.server.closeAllConnections();
+      this.server.close();
+      this.server = null;
+    }
   }
 
   _connectRealtime(resolve, reject) {
     this.resolveConversation = resolve;
+    const realtimeModel = this.cfg.novaModel || 'gpt-4o-realtime-preview';
     this.ws = new WebSocket(
-      `wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview`,
+      `wss://api.openai.com/v1/realtime?model=${realtimeModel}`,
       {
         headers: {
           Authorization: `Bearer ${this.cfg.openaiApiKey}`,
@@ -271,18 +286,30 @@ class NovaAgent {
 
     this.ws.on('open', () => {
       this.emit({ type: 'log', text: '[Nova] Connected to OpenAI Realtime' });
-      this._send({
-        type: 'session.update',
-        session: {
-          modalities: ['text', 'audio'],
-          instructions: this.cfg.novaInstructions,
-          voice: this.cfg.novaVoice,
-          input_audio_format: 'pcm16',
-          output_audio_format: 'pcm16',
-          input_audio_transcription: { model: 'whisper-1' },
-          turn_detection: null,
-        },
-      });
+      const sessionCfg = {
+        modalities: ['text', 'audio'],
+        instructions: this.cfg.novaInstructions,
+        voice: this.cfg.novaVoice,
+        input_audio_format: 'pcm16',
+        output_audio_format: 'pcm16',
+        input_audio_transcription: { model: 'whisper-1' },
+        turn_detection: null,
+      };
+      const tools = (this.cfg.novaTools || []).filter(t => t.name && t.description);
+      if (tools.length > 0) {
+        sessionCfg.tools = tools.map(t => ({
+          type: 'function',
+          name: t.name,
+          description: t.description,
+          parameters: (() => {
+            try { return JSON.parse(t.parameters || '{}'); }
+            catch { return { type: 'object', properties: {} }; }
+          })(),
+        }));
+        sessionCfg.tool_choice = 'auto';
+        this.emit({ type: 'log', text: `[Nova] Registering ${tools.length} tool(s): ${tools.map(t => t.name).join(', ')}` });
+      }
+      this._send({ type: 'session.update', session: sessionCfg });
     });
 
     this.ws.on('message', (raw) => this._onMessage(raw));
@@ -330,7 +357,7 @@ class NovaAgent {
         break;
 
       case 'response.done':
-        this._onResponseDone();
+        this._onResponseDone(event);
         break;
 
       case 'error':
@@ -340,8 +367,19 @@ class NovaAgent {
     }
   }
 
-  _onResponseDone() {
+  _onResponseDone(event) {
     if (!this.busy) return;
+
+    // ── Function call? Execute tool and feed result back before speech turn ──
+    const output = (event && event.response && event.response.output) || [];
+    const funcCall = output.find(o => o.type === 'function_call');
+    if (funcCall) {
+      this._handleFunctionCall(funcCall).catch(e =>
+        this.emit({ type: 'error', message: '[Nova] Tool execution error: ' + e.message })
+      );
+      return;
+    }
+
     if (this.audioDeltaBufs.length === 0) {
       this.emit({ type: 'log', text: '[Nova] response.done with no audio — skipping turn' });
       this.busy = false;
@@ -370,10 +408,63 @@ class NovaAgent {
     setTimeout(() => this._sendToSage(chunks, globalTurn, xcript, logLine), 300);
   }
 
+  async _handleFunctionCall(funcCall) {
+    const { name, arguments: argsStr, call_id } = funcCall;
+    this.emit({ type: 'log', text: `[Nova] Tool call → ${name}(${argsStr})` });
+    let result;
+    try {
+      const args = JSON.parse(argsStr || '{}');
+      result = await this._executeTool(name, args);
+    } catch (e) {
+      result = { error: e.message };
+    }
+    this.emit({ type: 'log', text: `[Nova] Tool result ← ${JSON.stringify(result).slice(0, 120)}` });
+    this._send({
+      type: 'conversation.item.create',
+      item: { type: 'function_call_output', call_id, output: JSON.stringify(result) },
+    });
+    this._send({ type: 'response.create' });
+  }
+
+  async _executeTool(name, args) {
+    const tools = this.cfg.novaTools || [];
+    const tool  = tools.find(t => t.name === name);
+    if (!tool) return { error: `Unknown tool: ${name}` };
+
+    if (tool.execution === 'static') {
+      try { return JSON.parse(tool.staticResponse || 'null'); }
+      catch { return { result: tool.staticResponse }; }
+    }
+
+    if (tool.execution === 'code') {
+      // Run user code in a sandboxed vm context with safe globals only.
+      // The function body has access to `args` and common built-ins.
+      const sandbox = {
+        args,
+        Math, Date, JSON, Number, String, Boolean, Object, Array,
+        parseInt, parseFloat, isNaN, isFinite,
+      };
+      const ctx    = vm.createContext(sandbox);
+      const script = new vm.Script(`(function(args){ ${tool.codeBody || 'return {};'} })(args)`);
+      const result = script.runInContext(ctx, { timeout: 3000 });
+      return result ?? { done: true };
+    }
+
+    // HTTP execution
+    const method = (tool.httpMethod || 'POST').toUpperCase();
+    let headers = { 'Content-Type': 'application/json' };
+    try { Object.assign(headers, JSON.parse(tool.httpHeaders || '{}')); } catch {}
+    const opts = { method, headers };
+    if (method !== 'GET' && method !== 'HEAD') opts.body = JSON.stringify(args);
+    const resp = await fetch(tool.httpUrl, opts);
+    const text = await resp.text();
+    try { return JSON.parse(text); } catch { return { result: text }; }
+  }
+
   _sendToSage(chunks, turn, transcript = '', transcriptLine = '', retries = 5) {
     const body = JSON.stringify({ audio: chunks, turn, transcript, transcriptLine });
     const req  = http.request(
-      { host: 'localhost', port: SAGE_PORT, path: '/audio', method: 'POST',
+      { host: 'localhost', port: this.cfg.sagePcPort || SAGE_PORT, path: '/audio', method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) } },
       () => this.emit({ type: 'log', text: `[Nova] Relayed to Sage (turn ${turn})` })
     );
@@ -447,20 +538,34 @@ class NovaAgent {
     const keys = Object.keys(this.conversationPcm).map(Number).sort((a, b) => a - b);
     if (!keys.length) return null;
     const pcm  = Buffer.concat(keys.map(k => this.conversationPcm[k]));
-    const file = path.join(OUTPUT_DIR, 'conversation.wav');
+    const file = path.join(this.outputDir, 'conversation.wav');
     fs.writeFileSync(file, buildWav(pcm));
     this.emit({ type: 'log', text: `[Nova] ✔ conversation.wav — ${keys.length} turns, ${(pcm.length / 1024).toFixed(1)} KB` });
     return file;
   }
 
   _finishConversation() {
-    const wavPath        = path.join(OUTPUT_DIR, 'conversation.wav');
-    const transcriptPath = path.join(OUTPUT_DIR, 'transcript.txt');
+    const wavPath        = path.join(this.outputDir, 'conversation.wav');
+    const transcriptPath = path.join(this.outputDir, 'transcript.txt');
     // Always re-export now — Nova's farewell PCM will have been stored by _onResponseDone
     this._exportConversation();
     this.emit({ type: 'done', wavPath, transcriptPath });
-    this.stop();
-    if (this.resolveConversation) this.resolveConversation();
+
+    // Close WS immediately
+    this.stopped = true;
+    if (this.ws && this.ws.readyState === WebSocket.OPEN) this.ws.close();
+
+    // Close HTTP server and wait for the port to actually be released
+    // before resolving — prevents EADDRINUSE on the next simulation run.
+    const resolve = this.resolveConversation;
+    if (this.server) {
+      const srv = this.server;
+      this.server = null;
+      if (typeof srv.closeAllConnections === 'function') srv.closeAllConnections();
+      srv.close(() => { if (resolve) resolve(); });
+    } else {
+      if (resolve) resolve();
+    }
   }
 }
 
@@ -497,6 +602,8 @@ class Conversation {
     try {
       await this._nova.start();
     } finally {
+      // Always stop Sage's HTTP server so its port is freed before the next run.
+      this._sage.stop();
       this._running = false;
     }
   }

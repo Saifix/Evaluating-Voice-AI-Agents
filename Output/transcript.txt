@@ -1,31 +1,31 @@
 [Turn 1] Nova: Joblogic helpdesk, this is Nova. How can I help you today?
 
-[Turn 2] Sage: Hi, yeah, I need to report a really urgent issue with our heating.
+[Turn 2] Sage: Hi, yeah, I've got a bit of an emergency here. Our main gas boiler has completely packed in—can you help?
 
-[Turn 3] Nova: I can help with that. Could I please get your full name to start?
+[Turn 3] Nova: I’m sorry to hear that. Could I please start by taking your full name and contact number?
 
-[Turn 4] Sage: Sure, it's Alex Thompson.
+[Turn 4] Sage: Sure, it’s Alex Thompson. My number is 07700 900 123.
 
-[Turn 5] Nova: Thank you, Alex. Could I also have a contact number for you?
+[Turn 5] Nova: Thanks, Alex. Now, could you please give me the site name and the full address where the boiler is located?
 
-[Turn 6] Sage: Yes, it's 07700 900 123.
+[Turn 6] Sage: It's Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE.
 
-[Turn 7] Nova: Got it. Now, could you please provide me with the site name and full address where the issue is happening?
+[Turn 7] Nova: Got it, thank you. Just to confirm, that’s Meridian House, Unit 12, Trafford Park, Manchester, M17 1BU. Is that all correct?
 
-[Turn 8] Sage: It's Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE.
+[Turn 8] Sage: No, it’s M17 1BE, not 1BU. Can we move this along, please? It’s quite urgent.
 
-[Turn 9] Nova: Thank you for that. Could you please describe the issue with the heating in a bit more detail?
+[Turn 9] Nova: Thanks for clarifying that. Now, could you give me a bit more detail about the issue with the boiler? Are there any specific symptoms or recent changes you’ve noticed?
 
-[Turn 10] Sage: The main gas boiler has completely failed since early this morning. We've got no heating or hot water at all.
+[Turn 10] Sage: It just completely stopped working since about 6am. No heating, no hot water at all. Nothing unusual before that—it just failed suddenly.
 
-[Turn 11] Nova: Thanks for explaining that. What priority would you like me to assign to this job? Emergency, High, Medium, or Low?
+[Turn 11] Nova: Thank you for that detail. Since it’s urgent, I’ll mark that down. Could you please confirm the priority level as emergency, high, medium, or low?
 
-[Turn 12] Sage: Definitely emergency—it's freezing, and we've got about 40 staff here with no heating or hot water.
+[Turn 12] Sage: Definitely emergency—there are 40 staff here, and it’s freezing. We need this looked at ASAP.
 
-[Turn 13] Nova: I understand, I’ll log that as an emergency. Let me confirm all the details with you. Your name is Alex Thompson, the contact number is 77090123, and the site is Meridian House, Unit 12, Trafford Park, Manchester, M17 1BQ. The issue is a complete failure of the main gas boiler, no heating or hot water, and it’s an emergency priority. Does that all sound correct?
+[Turn 13] Nova: Understood, I’ve marked it as an emergency. Let me confirm everything I have so far. Your name is Alex Thompson, your contact number is 07700 900 123, and the site is Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE. The issue is a complete boiler failure with no heating or hot water since this morning. Is all of that correct?
 
-[Turn 14] Sage: Almost—all correct except the postcode, it's M17 1BE, not BQ. Can you please get someone out as soon as possible?
+[Turn 14] Sage: Yes, that’s all correct. Can you give me an idea of when someone will be out?
 
-[Turn 15] Nova: Thanks for that correction. I’ve updated the postcode to M17 1BE. I’ll make sure it’s treated as urgent. Now I’ll generate a job reference number for you. The reference number is JL-58293. I’ve logged that for you, and an engineer will be in touch very soon. Thank you for calling Joblogic.
+[Turn 15] Nova: I’ll escalate this as an emergency, so an engineer should be in touch with you very soon. Let me give you a reference number for the job. Your job reference number is JL-59283. I have logged that for you. An engineer will be in touch shortly. Thank you for calling Joblogic.
 
-[Turn 16] Sage: Alright, thanks for sorting it quickly. I'll look out for the engineer—really appreciate it. Bye.
+[Turn 16] Sage: Alright, thanks for your help. I’ll wait for their call. Bye.
