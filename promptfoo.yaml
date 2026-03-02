@@ -1,0 +1,137 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Joblogic Voice Bot — Promptfoo Evaluation Suite
+#
+# Evaluates a helpdesk-call transcript against 8 quality criteria.
+# Each criterion is scored 0-10 (pass threshold = 7).
+#
+# Prerequisites:
+#   1. Complete a simulation (generates Output/transcript.txt)
+#   2. npm install -g promptfoo   (or: npx promptfoo eval ...)
+#   3. OPENAI_API_KEY in environment or .env
+#
+# Run:
+#   npx promptfoo eval --config promptfoo.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+
+description: "Joblogic Helpdesk Agent — Quality Evaluation Suite"
+
+providers:
+  - id: openai:gpt-4.1
+    config:
+      temperature: 0
+
+prompts:
+  - file://server/eval-prompt.txt
+
+defaultTest:
+  vars:
+    # Reads the latest simulation transcript automatically
+    transcript: "file://Output/transcript.txt"
+  options:
+    provider: openai:gpt-4.1
+
+tests:
+  - description: "Professional Greeting & Introduction"
+    vars:
+      criteria_name: "Professional Greeting"
+      task: >
+        Did Nova answer the call professionally, introduce themselves or the
+        company (Joblogic), and clearly offer to help the caller?
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const r = JSON.parse(output);
+          return r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;
+
+  - description: "Issue Description Captured"
+    vars:
+      criteria_name: "Issue Description"
+      task: >
+        Did Nova successfully gather a clear and complete description of the
+        maintenance issue being reported by the caller?
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const r = JSON.parse(output);
+          return r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;
+
+  - description: "Site & Location Captured"
+    vars:
+      criteria_name: "Site & Location"
+      task: >
+        Did Nova obtain the site name and/or address where the maintenance
+        issue is occurring?
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const r = JSON.parse(output);
+          return r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;
+
+  - description: "Caller Contact Details Captured"
+    vars:
+      criteria_name: "Contact Details"
+      task: >
+        Did Nova capture the caller's full name and contact phone number
+        (or email) during the call?
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const r = JSON.parse(output);
+          return r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;
+
+  - description: "Priority Assessment"
+    vars:
+      criteria_name: "Priority Assessment"
+      task: >
+        Did Nova assess and confirm the urgency or priority level of the
+        reported issue (e.g. Emergency / High / Medium / Low)?
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const r = JSON.parse(output);
+          return r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;
+
+  - description: "Details Confirmation"
+    vars:
+      criteria_name: "Details Confirmation"
+      task: >
+        Did Nova read back or confirm all the captured details (caller name,
+        site, issue, priority) to the caller before closing the call?
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const r = JSON.parse(output);
+          return r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;
+
+  - description: "Job Reference Number Provided"
+    vars:
+      criteria_name: "Job Reference"
+      task: >
+        Did Nova confirm the job has been logged and provide a job reference
+        number (format JL-XXXXX or similar) to the caller?
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const r = JSON.parse(output);
+          return r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;
+
+  - description: "Overall Call Quality"
+    vars:
+      criteria_name: "Overall Quality"
+      task: >
+        Evaluate the overall call quality across professionalism, tone,
+        empathy, efficiency, and whether the caller's issue was fully
+        resolved by end of the call.
+    assert:
+      - type: is-json
+      - type: javascript
+        value: |
+          const r = JSON.parse(output);
+          return r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;

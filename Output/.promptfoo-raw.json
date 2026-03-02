@@ -1,0 +1,1607 @@
+{
+  "evalId": "eval-IpH-2026-02-27T11:58:26",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-02-27T11:58:26.370Z",
+    "prompts": [
+      {
+        "raw": "You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n{{transcript}}\n=== TRANSCRIPT END ===\n\nEvaluation criterion: {{criteria_name}}\nTask: {{task}}\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+        "label": "server\\eval-prompt.txt: You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n{{transcript}}\n=== TRANSCRIPT END ===\n\nEvaluation criterion: {{criteria_name}}\nTask: {{task}}\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+        "id": "1737ae6538438d778ff7da971a22f442e93b7891e971866d152599717edbca9e",
+        "provider": "openai:gpt-4.1",
+        "metrics": {
+          "score": 8,
+          "testPassCount": 8,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 16,
+          "assertFailCount": 0,
+          "totalLatencyMs": 13870,
+          "tokenUsage": {
+            "prompt": 6173,
+            "completion": 475,
+            "cached": 0,
+            "total": 6648,
+            "numRequests": 8,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "cost": 0.016146
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.00196,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+              }
+            }
+          ]
+        },
+        "id": "d3f05eea-e8dc-4967-8563-be5edb513bb4",
+        "latencyMs": 1859,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n[Turn 1] Nova: Joblogic helpdesk, this is Nova. How can I help you today?\n\n[Turn 2] Sage: Hi, yeah, I need to report a really urgent issue with our heating.\n\n[Turn 3] Nova: I can help with that. Could I please get your full name to start?\n\n[Turn 4] Sage: Sure, it's Alex Thompson.\n\n[Turn 5] Nova: Thank you, Alex. Could I also have a contact number for you?\n\n[Turn 6] Sage: Yes, it's 07700 900 123.\n\n[Turn 7] Nova: Got it. Now, could you please provide me with the site name and full address where the issue is happening?\n\n[Turn 8] Sage: It's Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE.\n\n[Turn 9] Nova: Thank you for that. Could you please describe the issue with the heating in a bit more detail?\n\n[Turn 10] Sage: The main gas boiler has completely failed since early this morning. We've got no heating or hot water at all.\n\n[Turn 11] Nova: Thanks for explaining that. What priority would you like me to assign to this job? Emergency, High, Medium, or Low?\n\n[Turn 12] Sage: Definitely emergency—it's freezing, and we've got about 40 staff here with no heating or hot water.\n\n[Turn 13] Nova: I understand, I’ll log that as an emergency. Let me confirm all the details with you. Your name is Alex Thompson, the contact number is 77090123, and the site is Meridian House, Unit 12, Trafford Park, Manchester, M17 1BQ. The issue is a complete failure of the main gas boiler, no heating or hot water, and it’s an emergency priority. Does that all sound correct?\n\n[Turn 14] Sage: Almost—all correct except the postcode, it's M17 1BE, not BQ. Can you please get someone out as soon as possible?\n\n[Turn 15] Nova: Thanks for that correction. I’ve updated the postcode to M17 1BE. I’ll make sure it’s treated as urgent. Now I’ll generate a job reference number for you. The reference number is JL-58293. I’ve logged that for you, and an engineer will be in touch very soon. Thank you for calling Joblogic.\n\n[Turn 16] Sage: Alright, thanks for sorting it quickly. I'll look out for the engineer—really appreciate it. Bye.\n=== TRANSCRIPT END ===\n\nEvaluation criterion: Professional Greeting\nTask: Did Nova answer the call professionally, introduce themselves or the company (Joblogic), and clearly offer to help the caller?\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "label": "server\\eval-prompt.txt: You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n{{transcript}}\n=== TRANSCRIPT END ===\n\nEvaluation criterion: {{criteria_name}}\nTask: {{task}}\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "config": {
+            "provider": "openai:gpt-4.1"
+          }
+        },
+        "promptId": "1737ae6538438d778ff7da971a22f442e93b7891e971866d152599717edbca9e",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-4.1",
+          "label": ""
+        },
+        "response": {
+          "output": "{\"score\": 10, \"pass\": true, \"reasoning\": \"Nova answered with 'Joblogic helpdesk, this is Nova. How can I help you today?', clearly introducing the company and themselves, and offering assistance in a professional manner.\"}",
+          "tokenUsage": {
+            "total": 824,
+            "prompt": 772,
+            "completion": 52,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 1859,
+          "finishReason": "stop",
+          "cost": 0.00196,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9d4782aa48bff891-SIN",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 27 Feb 2026 11:58:28 GMT",
+                "openai-organization": "joblogic-6mep0p",
+                "openai-processing-ms": "1141",
+                "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=kdBK0IMxyLlVoAm91MWum8qg7jQFhHfFxQ1L.0ODg6c-1772193506.9259284-1.0.1.1-9ByZMbM0hWYWU3FMugjYVB0awq7CJ9clN3k.edy9EY9XKPuJgV072thlSBYN1mPGUpqlOPU4uU2jsWtROkP_FFYXLeC2alc70U0C2CVFmSM6_LHzWR1qozjD88SqNx6k; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:28 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "10000",
+                "x-ratelimit-limit-tokens": "30000000",
+                "x-ratelimit-remaining-requests": "9999",
+                "x-ratelimit-remaining-tokens": "29999251",
+                "x-ratelimit-reset-requests": "6ms",
+                "x-ratelimit-reset-tokens": "1ms",
+                "x-request-id": "req_b5376de728884d608f8b6a951bd50b43"
+              }
+            }
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Professional Greeting & Introduction",
+          "vars": {
+            "transcript": "file://Output\\transcript.txt",
+            "criteria_name": "Professional Greeting",
+            "task": "Did Nova answer the call professionally, introduce themselves or the company (Joblogic), and clearly offer to help the caller?\n"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+            }
+          ],
+          "options": {
+            "provider": "openai:gpt-4.1"
+          },
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "transcript": "file://Output\\transcript.txt",
+          "criteria_name": "Professional Greeting",
+          "task": "Did Nova answer the call professionally, introduce themselves or the company (Joblogic), and clearly offer to help the caller?\n"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9d4782aa48bff891-SIN",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 27 Feb 2026 11:58:28 GMT",
+              "openai-organization": "joblogic-6mep0p",
+              "openai-processing-ms": "1141",
+              "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=kdBK0IMxyLlVoAm91MWum8qg7jQFhHfFxQ1L.0ODg6c-1772193506.9259284-1.0.1.1-9ByZMbM0hWYWU3FMugjYVB0awq7CJ9clN3k.edy9EY9XKPuJgV072thlSBYN1mPGUpqlOPU4uU2jsWtROkP_FFYXLeC2alc70U0C2CVFmSM6_LHzWR1qozjD88SqNx6k; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:28 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "10000",
+              "x-ratelimit-limit-tokens": "30000000",
+              "x-ratelimit-remaining-requests": "9999",
+              "x-ratelimit-remaining-tokens": "29999251",
+              "x-ratelimit-reset-requests": "6ms",
+              "x-ratelimit-reset-tokens": "1ms",
+              "x-request-id": "req_b5376de728884d608f8b6a951bd50b43"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.002054,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+              }
+            }
+          ]
+        },
+        "id": "0c690cc5-a482-49b0-b9ab-85fd9f7ba214",
+        "latencyMs": 1772,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n[Turn 1] Nova: Joblogic helpdesk, this is Nova. How can I help you today?\n\n[Turn 2] Sage: Hi, yeah, I need to report a really urgent issue with our heating.\n\n[Turn 3] Nova: I can help with that. Could I please get your full name to start?\n\n[Turn 4] Sage: Sure, it's Alex Thompson.\n\n[Turn 5] Nova: Thank you, Alex. Could I also have a contact number for you?\n\n[Turn 6] Sage: Yes, it's 07700 900 123.\n\n[Turn 7] Nova: Got it. Now, could you please provide me with the site name and full address where the issue is happening?\n\n[Turn 8] Sage: It's Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE.\n\n[Turn 9] Nova: Thank you for that. Could you please describe the issue with the heating in a bit more detail?\n\n[Turn 10] Sage: The main gas boiler has completely failed since early this morning. We've got no heating or hot water at all.\n\n[Turn 11] Nova: Thanks for explaining that. What priority would you like me to assign to this job? Emergency, High, Medium, or Low?\n\n[Turn 12] Sage: Definitely emergency—it's freezing, and we've got about 40 staff here with no heating or hot water.\n\n[Turn 13] Nova: I understand, I’ll log that as an emergency. Let me confirm all the details with you. Your name is Alex Thompson, the contact number is 77090123, and the site is Meridian House, Unit 12, Trafford Park, Manchester, M17 1BQ. The issue is a complete failure of the main gas boiler, no heating or hot water, and it’s an emergency priority. Does that all sound correct?\n\n[Turn 14] Sage: Almost—all correct except the postcode, it's M17 1BE, not BQ. Can you please get someone out as soon as possible?\n\n[Turn 15] Nova: Thanks for that correction. I’ve updated the postcode to M17 1BE. I’ll make sure it’s treated as urgent. Now I’ll generate a job reference number for you. The reference number is JL-58293. I’ve logged that for you, and an engineer will be in touch very soon. Thank you for calling Joblogic.\n\n[Turn 16] Sage: Alright, thanks for sorting it quickly. I'll look out for the engineer—really appreciate it. Bye.\n=== TRANSCRIPT END ===\n\nEvaluation criterion: Issue Description\nTask: Did Nova successfully gather a clear and complete description of the maintenance issue being reported by the caller?\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "label": "server\\eval-prompt.txt: You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n{{transcript}}\n=== TRANSCRIPT END ===\n\nEvaluation criterion: {{criteria_name}}\nTask: {{task}}\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "config": {
+            "provider": "openai:gpt-4.1"
+          }
+        },
+        "promptId": "1737ae6538438d778ff7da971a22f442e93b7891e971866d152599717edbca9e",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-4.1",
+          "label": ""
+        },
+        "response": {
+          "output": "{\"score\": 9, \"pass\": true, \"reasoning\": \"Nova asked for a detailed description (Turn 9) and confirmed the main gas boiler failure, no heating or hot water (Turn 13). However, Nova could have probed slightly more (e.g., for access or safety concerns).\"}",
+          "tokenUsage": {
+            "total": 832,
+            "prompt": 767,
+            "completion": 65,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 1772,
+          "finishReason": "stop",
+          "cost": 0.002054,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9d4782aa28b1f8ca-SIN",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 27 Feb 2026 11:58:28 GMT",
+                "openai-organization": "joblogic-6mep0p",
+                "openai-processing-ms": "1097",
+                "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=koP0RKaG43QuHMcx8qyKCKTA09X7WbvJVjSR1gaK2vA-1772193506.9017136-1.0.1.1-YQls6eZbHukfGrBYqiN41usl8upspN92VcSvz7087F5x9Y1Rp1F8V4KJpEAlk8sb5DQlt9nBwB0QyLUFNdAv_SbAMiihVKSpsZws9976830SVW14rFiWFcAyYDoseXoQ; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:28 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "10000",
+                "x-ratelimit-limit-tokens": "30000000",
+                "x-ratelimit-remaining-requests": "9999",
+                "x-ratelimit-remaining-tokens": "29999255",
+                "x-ratelimit-reset-requests": "6ms",
+                "x-ratelimit-reset-tokens": "1ms",
+                "x-request-id": "req_051cdafd5a3447f9b5c2f61f5d1005e4"
+              }
+            }
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Issue Description Captured",
+          "vars": {
+            "transcript": "file://Output\\transcript.txt",
+            "criteria_name": "Issue Description",
+            "task": "Did Nova successfully gather a clear and complete description of the maintenance issue being reported by the caller?\n"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+            }
+          ],
+          "options": {
+            "provider": "openai:gpt-4.1"
+          },
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "transcript": "file://Output\\transcript.txt",
+          "criteria_name": "Issue Description",
+          "task": "Did Nova successfully gather a clear and complete description of the maintenance issue being reported by the caller?\n"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9d4782aa28b1f8ca-SIN",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 27 Feb 2026 11:58:28 GMT",
+              "openai-organization": "joblogic-6mep0p",
+              "openai-processing-ms": "1097",
+              "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=koP0RKaG43QuHMcx8qyKCKTA09X7WbvJVjSR1gaK2vA-1772193506.9017136-1.0.1.1-YQls6eZbHukfGrBYqiN41usl8upspN92VcSvz7087F5x9Y1Rp1F8V4KJpEAlk8sb5DQlt9nBwB0QyLUFNdAv_SbAMiihVKSpsZws9976830SVW14rFiWFcAyYDoseXoQ; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:28 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "10000",
+              "x-ratelimit-limit-tokens": "30000000",
+              "x-ratelimit-remaining-requests": "9999",
+              "x-ratelimit-remaining-tokens": "29999255",
+              "x-ratelimit-reset-requests": "6ms",
+              "x-ratelimit-reset-tokens": "1ms",
+              "x-request-id": "req_051cdafd5a3447f9b5c2f61f5d1005e4"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.002034,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+              }
+            }
+          ]
+        },
+        "id": "5cb11e8e-7356-4cd3-98de-9db633099181",
+        "latencyMs": 1835,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n[Turn 1] Nova: Joblogic helpdesk, this is Nova. How can I help you today?\n\n[Turn 2] Sage: Hi, yeah, I need to report a really urgent issue with our heating.\n\n[Turn 3] Nova: I can help with that. Could I please get your full name to start?\n\n[Turn 4] Sage: Sure, it's Alex Thompson.\n\n[Turn 5] Nova: Thank you, Alex. Could I also have a contact number for you?\n\n[Turn 6] Sage: Yes, it's 07700 900 123.\n\n[Turn 7] Nova: Got it. Now, could you please provide me with the site name and full address where the issue is happening?\n\n[Turn 8] Sage: It's Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE.\n\n[Turn 9] Nova: Thank you for that. Could you please describe the issue with the heating in a bit more detail?\n\n[Turn 10] Sage: The main gas boiler has completely failed since early this morning. We've got no heating or hot water at all.\n\n[Turn 11] Nova: Thanks for explaining that. What priority would you like me to assign to this job? Emergency, High, Medium, or Low?\n\n[Turn 12] Sage: Definitely emergency—it's freezing, and we've got about 40 staff here with no heating or hot water.\n\n[Turn 13] Nova: I understand, I’ll log that as an emergency. Let me confirm all the details with you. Your name is Alex Thompson, the contact number is 77090123, and the site is Meridian House, Unit 12, Trafford Park, Manchester, M17 1BQ. The issue is a complete failure of the main gas boiler, no heating or hot water, and it’s an emergency priority. Does that all sound correct?\n\n[Turn 14] Sage: Almost—all correct except the postcode, it's M17 1BE, not BQ. Can you please get someone out as soon as possible?\n\n[Turn 15] Nova: Thanks for that correction. I’ve updated the postcode to M17 1BE. I’ll make sure it’s treated as urgent. Now I’ll generate a job reference number for you. The reference number is JL-58293. I’ve logged that for you, and an engineer will be in touch very soon. Thank you for calling Joblogic.\n\n[Turn 16] Sage: Alright, thanks for sorting it quickly. I'll look out for the engineer—really appreciate it. Bye.\n=== TRANSCRIPT END ===\n\nEvaluation criterion: Site & Location\nTask: Did Nova obtain the site name and/or address where the maintenance issue is occurring?\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "label": "server\\eval-prompt.txt: You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n{{transcript}}\n=== TRANSCRIPT END ===\n\nEvaluation criterion: {{criteria_name}}\nTask: {{task}}\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "config": {
+            "provider": "openai:gpt-4.1"
+          }
+        },
+        "promptId": "1737ae6538438d778ff7da971a22f442e93b7891e971866d152599717edbca9e",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-4.1",
+          "label": ""
+        },
+        "response": {
+          "output": "{\"score\": 10, \"pass\": true, \"reasoning\": \"Nova explicitly requested the site name and full address (Turn 7), received the full details (Turn 8), and confirmed them back (Turn 13), correcting the postcode when prompted. Site/location was perfectly obtained and verified.\"}",
+          "tokenUsage": {
+            "total": 828,
+            "prompt": 765,
+            "completion": 63,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 1835,
+          "finishReason": "stop",
+          "cost": 0.002034,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9d4782aa2f0dfd24-SIN",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 27 Feb 2026 11:58:28 GMT",
+                "openai-organization": "joblogic-6mep0p",
+                "openai-processing-ms": "1172",
+                "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=ONhy6MdnZMjv8hZId4cTeXIhSsOeNDg4feYRM65MCOE-1772193506.9092667-1.0.1.1-Rdr0NoP5zkT5Y9xKOqOCZB63ztgHRWLSoOlxUKqmDYk8OS2Um9iTHOs_.aY_In0wge4fXflupcvrhoPv4sKjX746figGZR.3JW_htK_lX_PqqVuAtd1BHnuycpEa6i2N; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:28 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "10000",
+                "x-ratelimit-limit-tokens": "30000000",
+                "x-ratelimit-remaining-requests": "9999",
+                "x-ratelimit-remaining-tokens": "29999263",
+                "x-ratelimit-reset-requests": "6ms",
+                "x-ratelimit-reset-tokens": "1ms",
+                "x-request-id": "req_fff2f246da714ee3912fa9ed7533acca"
+              }
+            }
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Site & Location Captured",
+          "vars": {
+            "transcript": "file://Output\\transcript.txt",
+            "criteria_name": "Site & Location",
+            "task": "Did Nova obtain the site name and/or address where the maintenance issue is occurring?\n"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+            }
+          ],
+          "options": {
+            "provider": "openai:gpt-4.1"
+          },
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "vars": {
+          "transcript": "file://Output\\transcript.txt",
+          "criteria_name": "Site & Location",
+          "task": "Did Nova obtain the site name and/or address where the maintenance issue is occurring?\n"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9d4782aa2f0dfd24-SIN",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 27 Feb 2026 11:58:28 GMT",
+              "openai-organization": "joblogic-6mep0p",
+              "openai-processing-ms": "1172",
+              "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=ONhy6MdnZMjv8hZId4cTeXIhSsOeNDg4feYRM65MCOE-1772193506.9092667-1.0.1.1-Rdr0NoP5zkT5Y9xKOqOCZB63ztgHRWLSoOlxUKqmDYk8OS2Um9iTHOs_.aY_In0wge4fXflupcvrhoPv4sKjX746figGZR.3JW_htK_lX_PqqVuAtd1BHnuycpEa6i2N; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:28 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "10000",
+              "x-ratelimit-limit-tokens": "30000000",
+              "x-ratelimit-remaining-requests": "9999",
+              "x-ratelimit-remaining-tokens": "29999263",
+              "x-ratelimit-reset-requests": "6ms",
+              "x-ratelimit-reset-tokens": "1ms",
+              "x-request-id": "req_fff2f246da714ee3912fa9ed7533acca"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.001976,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+              }
+            }
+          ]
+        },
+        "id": "54324a3c-2986-400e-985d-a08057e1dc6f",
+        "latencyMs": 1812,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n[Turn 1] Nova: Joblogic helpdesk, this is Nova. How can I help you today?\n\n[Turn 2] Sage: Hi, yeah, I need to report a really urgent issue with our heating.\n\n[Turn 3] Nova: I can help with that. Could I please get your full name to start?\n\n[Turn 4] Sage: Sure, it's Alex Thompson.\n\n[Turn 5] Nova: Thank you, Alex. Could I also have a contact number for you?\n\n[Turn 6] Sage: Yes, it's 07700 900 123.\n\n[Turn 7] Nova: Got it. Now, could you please provide me with the site name and full address where the issue is happening?\n\n[Turn 8] Sage: It's Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE.\n\n[Turn 9] Nova: Thank you for that. Could you please describe the issue with the heating in a bit more detail?\n\n[Turn 10] Sage: The main gas boiler has completely failed since early this morning. We've got no heating or hot water at all.\n\n[Turn 11] Nova: Thanks for explaining that. What priority would you like me to assign to this job? Emergency, High, Medium, or Low?\n\n[Turn 12] Sage: Definitely emergency—it's freezing, and we've got about 40 staff here with no heating or hot water.\n\n[Turn 13] Nova: I understand, I’ll log that as an emergency. Let me confirm all the details with you. Your name is Alex Thompson, the contact number is 77090123, and the site is Meridian House, Unit 12, Trafford Park, Manchester, M17 1BQ. The issue is a complete failure of the main gas boiler, no heating or hot water, and it’s an emergency priority. Does that all sound correct?\n\n[Turn 14] Sage: Almost—all correct except the postcode, it's M17 1BE, not BQ. Can you please get someone out as soon as possible?\n\n[Turn 15] Nova: Thanks for that correction. I’ve updated the postcode to M17 1BE. I’ll make sure it’s treated as urgent. Now I’ll generate a job reference number for you. The reference number is JL-58293. I’ve logged that for you, and an engineer will be in touch very soon. Thank you for calling Joblogic.\n\n[Turn 16] Sage: Alright, thanks for sorting it quickly. I'll look out for the engineer—really appreciate it. Bye.\n=== TRANSCRIPT END ===\n\nEvaluation criterion: Contact Details\nTask: Did Nova capture the caller's full name and contact phone number (or email) during the call?\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "label": "server\\eval-prompt.txt: You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n{{transcript}}\n=== TRANSCRIPT END ===\n\nEvaluation criterion: {{criteria_name}}\nTask: {{task}}\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "config": {
+            "provider": "openai:gpt-4.1"
+          }
+        },
+        "promptId": "1737ae6538438d778ff7da971a22f442e93b7891e971866d152599717edbca9e",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-4.1",
+          "label": ""
+        },
+        "response": {
+          "output": "{\"score\": 10, \"pass\": true, \"reasoning\": \"Nova explicitly asked for and correctly recorded the caller's full name (Alex Thompson) and contact number (07700 900 123), confirming these details back to the caller during the call.\"}",
+          "tokenUsage": {
+            "total": 823,
+            "prompt": 768,
+            "completion": 55,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 1812,
+          "finishReason": "stop",
+          "cost": 0.001976,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9d4782aa2d48fd78-SIN",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 27 Feb 2026 11:58:28 GMT",
+                "openai-organization": "joblogic-6mep0p",
+                "openai-processing-ms": "1130",
+                "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=cm5YWbTJ4pD8QrY56gH2ExkjytDFoG3GVdLxXbKB7HM-1772193506.9075496-1.0.1.1-LWjaXTVzM3L_BKclXo6_MDTtvxPHVvU1TKJQ0649BZx8DEW97tSLaLNf60NXnoKLlgFMjTknYVFTvc.UZYRvfdNeQB00zm2xZKcVTb3CykhLD6bxX3j86msD2CEbO.SN; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:28 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "10000",
+                "x-ratelimit-limit-tokens": "30000000",
+                "x-ratelimit-remaining-requests": "9999",
+                "x-ratelimit-remaining-tokens": "29999261",
+                "x-ratelimit-reset-requests": "6ms",
+                "x-ratelimit-reset-tokens": "1ms",
+                "x-request-id": "req_c8c733b27ff849a8a373316799105931"
+              }
+            }
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Caller Contact Details Captured",
+          "vars": {
+            "transcript": "file://Output\\transcript.txt",
+            "criteria_name": "Contact Details",
+            "task": "Did Nova capture the caller's full name and contact phone number (or email) during the call?\n"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+            }
+          ],
+          "options": {
+            "provider": "openai:gpt-4.1"
+          },
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "vars": {
+          "transcript": "file://Output\\transcript.txt",
+          "criteria_name": "Contact Details",
+          "task": "Did Nova capture the caller's full name and contact phone number (or email) during the call?\n"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9d4782aa2d48fd78-SIN",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 27 Feb 2026 11:58:28 GMT",
+              "openai-organization": "joblogic-6mep0p",
+              "openai-processing-ms": "1130",
+              "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=cm5YWbTJ4pD8QrY56gH2ExkjytDFoG3GVdLxXbKB7HM-1772193506.9075496-1.0.1.1-LWjaXTVzM3L_BKclXo6_MDTtvxPHVvU1TKJQ0649BZx8DEW97tSLaLNf60NXnoKLlgFMjTknYVFTvc.UZYRvfdNeQB00zm2xZKcVTb3CykhLD6bxX3j86msD2CEbO.SN; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:28 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "10000",
+              "x-ratelimit-limit-tokens": "30000000",
+              "x-ratelimit-remaining-requests": "9999",
+              "x-ratelimit-remaining-tokens": "29999261",
+              "x-ratelimit-reset-requests": "6ms",
+              "x-ratelimit-reset-tokens": "1ms",
+              "x-request-id": "req_c8c733b27ff849a8a373316799105931"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.002028,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+              }
+            }
+          ]
+        },
+        "id": "a8211303-571a-4343-b30f-ea9a4a72e32e",
+        "latencyMs": 1724,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n[Turn 1] Nova: Joblogic helpdesk, this is Nova. How can I help you today?\n\n[Turn 2] Sage: Hi, yeah, I need to report a really urgent issue with our heating.\n\n[Turn 3] Nova: I can help with that. Could I please get your full name to start?\n\n[Turn 4] Sage: Sure, it's Alex Thompson.\n\n[Turn 5] Nova: Thank you, Alex. Could I also have a contact number for you?\n\n[Turn 6] Sage: Yes, it's 07700 900 123.\n\n[Turn 7] Nova: Got it. Now, could you please provide me with the site name and full address where the issue is happening?\n\n[Turn 8] Sage: It's Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE.\n\n[Turn 9] Nova: Thank you for that. Could you please describe the issue with the heating in a bit more detail?\n\n[Turn 10] Sage: The main gas boiler has completely failed since early this morning. We've got no heating or hot water at all.\n\n[Turn 11] Nova: Thanks for explaining that. What priority would you like me to assign to this job? Emergency, High, Medium, or Low?\n\n[Turn 12] Sage: Definitely emergency—it's freezing, and we've got about 40 staff here with no heating or hot water.\n\n[Turn 13] Nova: I understand, I’ll log that as an emergency. Let me confirm all the details with you. Your name is Alex Thompson, the contact number is 77090123, and the site is Meridian House, Unit 12, Trafford Park, Manchester, M17 1BQ. The issue is a complete failure of the main gas boiler, no heating or hot water, and it’s an emergency priority. Does that all sound correct?\n\n[Turn 14] Sage: Almost—all correct except the postcode, it's M17 1BE, not BQ. Can you please get someone out as soon as possible?\n\n[Turn 15] Nova: Thanks for that correction. I’ve updated the postcode to M17 1BE. I’ll make sure it’s treated as urgent. Now I’ll generate a job reference number for you. The reference number is JL-58293. I’ve logged that for you, and an engineer will be in touch very soon. Thank you for calling Joblogic.\n\n[Turn 16] Sage: Alright, thanks for sorting it quickly. I'll look out for the engineer—really appreciate it. Bye.\n=== TRANSCRIPT END ===\n\nEvaluation criterion: Priority Assessment\nTask: Did Nova assess and confirm the urgency or priority level of the reported issue (e.g. Emergency / High / Medium / Low)?\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "label": "server\\eval-prompt.txt: You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n{{transcript}}\n=== TRANSCRIPT END ===\n\nEvaluation criterion: {{criteria_name}}\nTask: {{task}}\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "config": {
+            "provider": "openai:gpt-4.1"
+          }
+        },
+        "promptId": "1737ae6538438d778ff7da971a22f442e93b7891e971866d152599717edbca9e",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-4.1",
+          "label": ""
+        },
+        "response": {
+          "output": "{\"score\": 10, \"pass\": true, \"reasoning\": \"Nova explicitly asked for the priority (Turn 11), confirmed 'emergency' with the caller (Turn 13), and reiterated urgency when closing the call (Turn 15). Priority assessment was clear and thorough.\"}",
+          "tokenUsage": {
+            "total": 834,
+            "prompt": 774,
+            "completion": 60,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 1724,
+          "finishReason": "stop",
+          "cost": 0.002028,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9d4782b4aee2f881-SIN",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 27 Feb 2026 11:58:29 GMT",
+                "openai-organization": "joblogic-6mep0p",
+                "openai-processing-ms": "1179",
+                "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=OqfWqg9EX2Wg6pZnEx9m6j_x_XgslUR81DrnA09TymQ-1772193508.5841124-1.0.1.1-60aMGKlNmJ81UmmCDqUwWo1dEkdFBjRLRH_lS9pxxTuZ9qLuv1QRa9Kw4X4RvzuvVamcD2tP3SWVwXmVF5qxhmgP32M2SwSXkCWnM3QiSNx8nacUQcLHLgQhFhKW7D_a; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:29 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "10000",
+                "x-ratelimit-limit-tokens": "30000000",
+                "x-ratelimit-remaining-requests": "9999",
+                "x-ratelimit-remaining-tokens": "29999253",
+                "x-ratelimit-reset-requests": "6ms",
+                "x-ratelimit-reset-tokens": "1ms",
+                "x-request-id": "req_578de90500ee4daa9484cfb77d695820"
+              }
+            }
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Priority Assessment",
+          "vars": {
+            "transcript": "file://Output\\transcript.txt",
+            "criteria_name": "Priority Assessment",
+            "task": "Did Nova assess and confirm the urgency or priority level of the reported issue (e.g. Emergency / High / Medium / Low)?\n"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+            }
+          ],
+          "options": {
+            "provider": "openai:gpt-4.1"
+          },
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "vars": {
+          "transcript": "file://Output\\transcript.txt",
+          "criteria_name": "Priority Assessment",
+          "task": "Did Nova assess and confirm the urgency or priority level of the reported issue (e.g. Emergency / High / Medium / Low)?\n"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9d4782b4aee2f881-SIN",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 27 Feb 2026 11:58:29 GMT",
+              "openai-organization": "joblogic-6mep0p",
+              "openai-processing-ms": "1179",
+              "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=OqfWqg9EX2Wg6pZnEx9m6j_x_XgslUR81DrnA09TymQ-1772193508.5841124-1.0.1.1-60aMGKlNmJ81UmmCDqUwWo1dEkdFBjRLRH_lS9pxxTuZ9qLuv1QRa9Kw4X4RvzuvVamcD2tP3SWVwXmVF5qxhmgP32M2SwSXkCWnM3QiSNx8nacUQcLHLgQhFhKW7D_a; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:29 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "10000",
+              "x-ratelimit-limit-tokens": "30000000",
+              "x-ratelimit-remaining-requests": "9999",
+              "x-ratelimit-remaining-tokens": "29999253",
+              "x-ratelimit-reset-requests": "6ms",
+              "x-ratelimit-reset-tokens": "1ms",
+              "x-request-id": "req_578de90500ee4daa9484cfb77d695820"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.002008,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+              }
+            }
+          ]
+        },
+        "id": "b593c0b6-739b-4220-9c5a-b5d135bb59a1",
+        "latencyMs": 1571,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n[Turn 1] Nova: Joblogic helpdesk, this is Nova. How can I help you today?\n\n[Turn 2] Sage: Hi, yeah, I need to report a really urgent issue with our heating.\n\n[Turn 3] Nova: I can help with that. Could I please get your full name to start?\n\n[Turn 4] Sage: Sure, it's Alex Thompson.\n\n[Turn 5] Nova: Thank you, Alex. Could I also have a contact number for you?\n\n[Turn 6] Sage: Yes, it's 07700 900 123.\n\n[Turn 7] Nova: Got it. Now, could you please provide me with the site name and full address where the issue is happening?\n\n[Turn 8] Sage: It's Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE.\n\n[Turn 9] Nova: Thank you for that. Could you please describe the issue with the heating in a bit more detail?\n\n[Turn 10] Sage: The main gas boiler has completely failed since early this morning. We've got no heating or hot water at all.\n\n[Turn 11] Nova: Thanks for explaining that. What priority would you like me to assign to this job? Emergency, High, Medium, or Low?\n\n[Turn 12] Sage: Definitely emergency—it's freezing, and we've got about 40 staff here with no heating or hot water.\n\n[Turn 13] Nova: I understand, I’ll log that as an emergency. Let me confirm all the details with you. Your name is Alex Thompson, the contact number is 77090123, and the site is Meridian House, Unit 12, Trafford Park, Manchester, M17 1BQ. The issue is a complete failure of the main gas boiler, no heating or hot water, and it’s an emergency priority. Does that all sound correct?\n\n[Turn 14] Sage: Almost—all correct except the postcode, it's M17 1BE, not BQ. Can you please get someone out as soon as possible?\n\n[Turn 15] Nova: Thanks for that correction. I’ve updated the postcode to M17 1BE. I’ll make sure it’s treated as urgent. Now I’ll generate a job reference number for you. The reference number is JL-58293. I’ve logged that for you, and an engineer will be in touch very soon. Thank you for calling Joblogic.\n\n[Turn 16] Sage: Alright, thanks for sorting it quickly. I'll look out for the engineer—really appreciate it. Bye.\n=== TRANSCRIPT END ===\n\nEvaluation criterion: Details Confirmation\nTask: Did Nova read back or confirm all the captured details (caller name, site, issue, priority) to the caller before closing the call?\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "label": "server\\eval-prompt.txt: You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n{{transcript}}\n=== TRANSCRIPT END ===\n\nEvaluation criterion: {{criteria_name}}\nTask: {{task}}\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "config": {
+            "provider": "openai:gpt-4.1"
+          }
+        },
+        "promptId": "1737ae6538438d778ff7da971a22f442e93b7891e971866d152599717edbca9e",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-4.1",
+          "label": ""
+        },
+        "response": {
+          "output": "{\"score\": 8, \"pass\": true, \"reasoning\": \"Nova confirmed the caller's name, contact number, site, issue, and priority in Turn 13. There was a minor error in the postcode, but Nova corrected it after Sage pointed it out.\"}",
+          "tokenUsage": {
+            "total": 833,
+            "prompt": 776,
+            "completion": 57,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 1571,
+          "finishReason": "stop",
+          "cost": 0.002008,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9d4782b4ec5241d7-SIN",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 27 Feb 2026 11:58:29 GMT",
+                "openai-organization": "joblogic-6mep0p",
+                "openai-processing-ms": "999",
+                "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=rYlSmI0dZiKkDzn0a1XoWVnpqL55u04yhVQCKnnkuHs-1772193508.6282241-1.0.1.1-cnQ8MjmA_tdSv8J9xsvUbp3c.KNTkoYrMykGMpF2EEqQnffl3rwUNEPIX7LWqDP4r_YV_UcXmSEg.DgAAU5Hl2xr2qE_Uh2IZShcWPHTyZN8yD11eNN4KzrUkC1umbQa; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:29 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "10000",
+                "x-ratelimit-limit-tokens": "30000000",
+                "x-ratelimit-remaining-requests": "9999",
+                "x-ratelimit-remaining-tokens": "29999250",
+                "x-ratelimit-reset-requests": "6ms",
+                "x-ratelimit-reset-tokens": "1ms",
+                "x-request-id": "req_95300fb1ee734f66a54058c105f632d7"
+              }
+            }
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Details Confirmation",
+          "vars": {
+            "transcript": "file://Output\\transcript.txt",
+            "criteria_name": "Details Confirmation",
+            "task": "Did Nova read back or confirm all the captured details (caller name, site, issue, priority) to the caller before closing the call?\n"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+            }
+          ],
+          "options": {
+            "provider": "openai:gpt-4.1"
+          },
+          "metadata": {}
+        },
+        "testIdx": 5,
+        "vars": {
+          "transcript": "file://Output\\transcript.txt",
+          "criteria_name": "Details Confirmation",
+          "task": "Did Nova read back or confirm all the captured details (caller name, site, issue, priority) to the caller before closing the call?\n"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9d4782b4ec5241d7-SIN",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 27 Feb 2026 11:58:29 GMT",
+              "openai-organization": "joblogic-6mep0p",
+              "openai-processing-ms": "999",
+              "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=rYlSmI0dZiKkDzn0a1XoWVnpqL55u04yhVQCKnnkuHs-1772193508.6282241-1.0.1.1-cnQ8MjmA_tdSv8J9xsvUbp3c.KNTkoYrMykGMpF2EEqQnffl3rwUNEPIX7LWqDP4r_YV_UcXmSEg.DgAAU5Hl2xr2qE_Uh2IZShcWPHTyZN8yD11eNN4KzrUkC1umbQa; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:29 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "10000",
+              "x-ratelimit-limit-tokens": "30000000",
+              "x-ratelimit-remaining-requests": "9999",
+              "x-ratelimit-remaining-tokens": "29999250",
+              "x-ratelimit-reset-requests": "6ms",
+              "x-ratelimit-reset-tokens": "1ms",
+              "x-request-id": "req_95300fb1ee734f66a54058c105f632d7"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.002012,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+              }
+            }
+          ]
+        },
+        "id": "a1a0adb4-1d4c-4841-8347-c9034fc9036b",
+        "latencyMs": 1566,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n[Turn 1] Nova: Joblogic helpdesk, this is Nova. How can I help you today?\n\n[Turn 2] Sage: Hi, yeah, I need to report a really urgent issue with our heating.\n\n[Turn 3] Nova: I can help with that. Could I please get your full name to start?\n\n[Turn 4] Sage: Sure, it's Alex Thompson.\n\n[Turn 5] Nova: Thank you, Alex. Could I also have a contact number for you?\n\n[Turn 6] Sage: Yes, it's 07700 900 123.\n\n[Turn 7] Nova: Got it. Now, could you please provide me with the site name and full address where the issue is happening?\n\n[Turn 8] Sage: It's Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE.\n\n[Turn 9] Nova: Thank you for that. Could you please describe the issue with the heating in a bit more detail?\n\n[Turn 10] Sage: The main gas boiler has completely failed since early this morning. We've got no heating or hot water at all.\n\n[Turn 11] Nova: Thanks for explaining that. What priority would you like me to assign to this job? Emergency, High, Medium, or Low?\n\n[Turn 12] Sage: Definitely emergency—it's freezing, and we've got about 40 staff here with no heating or hot water.\n\n[Turn 13] Nova: I understand, I’ll log that as an emergency. Let me confirm all the details with you. Your name is Alex Thompson, the contact number is 77090123, and the site is Meridian House, Unit 12, Trafford Park, Manchester, M17 1BQ. The issue is a complete failure of the main gas boiler, no heating or hot water, and it’s an emergency priority. Does that all sound correct?\n\n[Turn 14] Sage: Almost—all correct except the postcode, it's M17 1BE, not BQ. Can you please get someone out as soon as possible?\n\n[Turn 15] Nova: Thanks for that correction. I’ve updated the postcode to M17 1BE. I’ll make sure it’s treated as urgent. Now I’ll generate a job reference number for you. The reference number is JL-58293. I’ve logged that for you, and an engineer will be in touch very soon. Thank you for calling Joblogic.\n\n[Turn 16] Sage: Alright, thanks for sorting it quickly. I'll look out for the engineer—really appreciate it. Bye.\n=== TRANSCRIPT END ===\n\nEvaluation criterion: Job Reference\nTask: Did Nova confirm the job has been logged and provide a job reference number (format JL-XXXXX or similar) to the caller?\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "label": "server\\eval-prompt.txt: You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n{{transcript}}\n=== TRANSCRIPT END ===\n\nEvaluation criterion: {{criteria_name}}\nTask: {{task}}\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "config": {
+            "provider": "openai:gpt-4.1"
+          }
+        },
+        "promptId": "1737ae6538438d778ff7da971a22f442e93b7891e971866d152599717edbca9e",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-4.1",
+          "label": ""
+        },
+        "response": {
+          "output": "{\"score\": 10, \"pass\": true, \"reasoning\": \"Nova clearly stated, 'The reference number is JL-58293. I’ve logged that for you,' confirming the job was logged and providing a job reference in the correct format. Task was perfectly executed.\"}",
+          "tokenUsage": {
+            "total": 832,
+            "prompt": 774,
+            "completion": 58,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 1566,
+          "finishReason": "stop",
+          "cost": 0.002012,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9d4782b4fc897974-SIN",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 27 Feb 2026 11:58:29 GMT",
+                "openai-organization": "joblogic-6mep0p",
+                "openai-processing-ms": "1012",
+                "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=GtOCabG.o8_iZ_txVNvmUt0qjEhqKoAKkuf..GObIwo-1772193508.6353197-1.0.1.1-zOLkPbyMmj33TLAueq52DLw8y18TFF1xbfQaPS.U1x6tUEhdjAoZZI8Z355XLk4yP0D0Jg6Q3rti2U1_DBYVmoRxwlZJRgMgMnbVjDQlgRao.EZaIKxtlQfY.CKPvHJh; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:29 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "10000",
+                "x-ratelimit-limit-tokens": "30000000",
+                "x-ratelimit-remaining-requests": "9999",
+                "x-ratelimit-remaining-tokens": "29999255",
+                "x-ratelimit-reset-requests": "6ms",
+                "x-ratelimit-reset-tokens": "1ms",
+                "x-request-id": "req_c5f42ecc6af64bee849e744d155833ed"
+              }
+            }
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Job Reference Number Provided",
+          "vars": {
+            "transcript": "file://Output\\transcript.txt",
+            "criteria_name": "Job Reference",
+            "task": "Did Nova confirm the job has been logged and provide a job reference number (format JL-XXXXX or similar) to the caller?\n"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+            }
+          ],
+          "options": {
+            "provider": "openai:gpt-4.1"
+          },
+          "metadata": {}
+        },
+        "testIdx": 6,
+        "vars": {
+          "transcript": "file://Output\\transcript.txt",
+          "criteria_name": "Job Reference",
+          "task": "Did Nova confirm the job has been logged and provide a job reference number (format JL-XXXXX or similar) to the caller?\n"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9d4782b4fc897974-SIN",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 27 Feb 2026 11:58:29 GMT",
+              "openai-organization": "joblogic-6mep0p",
+              "openai-processing-ms": "1012",
+              "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=GtOCabG.o8_iZ_txVNvmUt0qjEhqKoAKkuf..GObIwo-1772193508.6353197-1.0.1.1-zOLkPbyMmj33TLAueq52DLw8y18TFF1xbfQaPS.U1x6tUEhdjAoZZI8Z355XLk4yP0D0Jg6Q3rti2U1_DBYVmoRxwlZJRgMgMnbVjDQlgRao.EZaIKxtlQfY.CKPvHJh; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:29 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "10000",
+              "x-ratelimit-limit-tokens": "30000000",
+              "x-ratelimit-remaining-requests": "9999",
+              "x-ratelimit-remaining-tokens": "29999255",
+              "x-ratelimit-reset-requests": "6ms",
+              "x-ratelimit-reset-tokens": "1ms",
+              "x-request-id": "req_c5f42ecc6af64bee849e744d155833ed"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.002074,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+              }
+            }
+          ]
+        },
+        "id": "79672cc5-a92b-4f9c-ac3a-937e7af7c063",
+        "latencyMs": 1731,
+        "namedScores": {},
+        "prompt": {
+          "raw": "You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n[Turn 1] Nova: Joblogic helpdesk, this is Nova. How can I help you today?\n\n[Turn 2] Sage: Hi, yeah, I need to report a really urgent issue with our heating.\n\n[Turn 3] Nova: I can help with that. Could I please get your full name to start?\n\n[Turn 4] Sage: Sure, it's Alex Thompson.\n\n[Turn 5] Nova: Thank you, Alex. Could I also have a contact number for you?\n\n[Turn 6] Sage: Yes, it's 07700 900 123.\n\n[Turn 7] Nova: Got it. Now, could you please provide me with the site name and full address where the issue is happening?\n\n[Turn 8] Sage: It's Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE.\n\n[Turn 9] Nova: Thank you for that. Could you please describe the issue with the heating in a bit more detail?\n\n[Turn 10] Sage: The main gas boiler has completely failed since early this morning. We've got no heating or hot water at all.\n\n[Turn 11] Nova: Thanks for explaining that. What priority would you like me to assign to this job? Emergency, High, Medium, or Low?\n\n[Turn 12] Sage: Definitely emergency—it's freezing, and we've got about 40 staff here with no heating or hot water.\n\n[Turn 13] Nova: I understand, I’ll log that as an emergency. Let me confirm all the details with you. Your name is Alex Thompson, the contact number is 77090123, and the site is Meridian House, Unit 12, Trafford Park, Manchester, M17 1BQ. The issue is a complete failure of the main gas boiler, no heating or hot water, and it’s an emergency priority. Does that all sound correct?\n\n[Turn 14] Sage: Almost—all correct except the postcode, it's M17 1BE, not BQ. Can you please get someone out as soon as possible?\n\n[Turn 15] Nova: Thanks for that correction. I’ve updated the postcode to M17 1BE. I’ll make sure it’s treated as urgent. Now I’ll generate a job reference number for you. The reference number is JL-58293. I’ve logged that for you, and an engineer will be in touch very soon. Thank you for calling Joblogic.\n\n[Turn 16] Sage: Alright, thanks for sorting it quickly. I'll look out for the engineer—really appreciate it. Bye.\n=== TRANSCRIPT END ===\n\nEvaluation criterion: Overall Quality\nTask: Evaluate the overall call quality across professionalism, tone, empathy, efficiency, and whether the caller's issue was fully resolved by end of the call.\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "label": "server\\eval-prompt.txt: You are a QA evaluator assessing an AI-powered helpdesk agent on a job-logging telephone call.\n\nRoles in the transcript:\n- \"Nova\"  = the AI HELPDESK AGENT being evaluated\n- \"Sage\"  = the simulated human CALLER (not being evaluated)\n\n=== TRANSCRIPT BEGIN ===\n{{transcript}}\n=== TRANSCRIPT END ===\n\nEvaluation criterion: {{criteria_name}}\nTask: {{task}}\n\nInstructions:\n- Be objective and evidence-based — cite what Nova actually said or failed to say\n- Score 0-10 where: 10 = perfectly executed, 7-9 = pass (good), 4-6 = partial credit, 0-3 = fail\n- Pass threshold is 7 or above\n- Return ONLY a raw JSON object on a single line — no markdown, no code fences, nothing else\n\nRequired output format (return exactly this, nothing else):\n{\"score\": <integer 0-10>, \"pass\": <boolean>, \"reasoning\": \"<max 40 words explaining the score>\"}",
+          "config": {
+            "provider": "openai:gpt-4.1"
+          }
+        },
+        "promptId": "1737ae6538438d778ff7da971a22f442e93b7891e971866d152599717edbca9e",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:gpt-4.1",
+          "label": ""
+        },
+        "response": {
+          "output": "{\"score\": 8, \"pass\": true, \"reasoning\": \"Nova was professional, empathetic, and efficient, confirming details and correcting errors. The issue was logged as an emergency and a reference provided. Minor error: misstated the phone number and postcode during confirmation, but corrected the postcode when prompted.\"}",
+          "tokenUsage": {
+            "total": 842,
+            "prompt": 777,
+            "completion": 65,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            }
+          },
+          "cached": false,
+          "latencyMs": 1731,
+          "finishReason": "stop",
+          "cost": 0.002074,
+          "guardrails": {
+            "flagged": false
+          },
+          "metadata": {
+            "http": {
+              "status": 200,
+              "statusText": "OK",
+              "headers": {
+                "access-control-expose-headers": "X-Request-ID",
+                "alt-svc": "h3=\":443\"; ma=86400",
+                "cf-cache-status": "DYNAMIC",
+                "cf-ray": "9d4782b50ef5a066-SIN",
+                "connection": "keep-alive",
+                "content-encoding": "br",
+                "content-type": "application/json",
+                "date": "Fri, 27 Feb 2026 11:58:30 GMT",
+                "openai-organization": "joblogic-6mep0p",
+                "openai-processing-ms": "1177",
+                "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+                "openai-version": "2020-10-01",
+                "server": "cloudflare",
+                "set-cookie": "__cf_bm=ZZKry3GUvoZ9G84xVCSiaSbNR1lXk3q1VrQnknNmze0-1772193508.650257-1.0.1.1-9Fe1wB0wLdXnnA56dT_gEGavK_ENDzSQhRwLc22pZrgpuEh7qkQZbgbAA73bV7fzEUvvt5IKrzBuKyYo.kvwCw.n3yGu4oLF5YDwu0Ea2p7AsmwLOeCGd9OC7ivR5ack; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:30 GMT",
+                "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+                "transfer-encoding": "chunked",
+                "x-content-type-options": "nosniff",
+                "x-openai-proxy-wasm": "v0.1",
+                "x-ratelimit-limit-requests": "10000",
+                "x-ratelimit-limit-tokens": "30000000",
+                "x-ratelimit-remaining-requests": "9999",
+                "x-ratelimit-remaining-tokens": "29999246",
+                "x-ratelimit-reset-requests": "6ms",
+                "x-ratelimit-reset-tokens": "1ms",
+                "x-request-id": "req_896b8c7444ca4dc6952dd798a9f68c25"
+              }
+            }
+          }
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "Overall Call Quality",
+          "vars": {
+            "transcript": "file://Output\\transcript.txt",
+            "criteria_name": "Overall Quality",
+            "task": "Evaluate the overall call quality across professionalism, tone, empathy, efficiency, and whether the caller's issue was fully resolved by end of the call.\n"
+          },
+          "assert": [
+            {
+              "type": "is-json"
+            },
+            {
+              "type": "javascript",
+              "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+            }
+          ],
+          "options": {
+            "provider": "openai:gpt-4.1"
+          },
+          "metadata": {}
+        },
+        "testIdx": 7,
+        "vars": {
+          "transcript": "file://Output\\transcript.txt",
+          "criteria_name": "Overall Quality",
+          "task": "Evaluate the overall call quality across professionalism, tone, empathy, efficiency, and whether the caller's issue was fully resolved by end of the call.\n"
+        },
+        "metadata": {
+          "http": {
+            "status": 200,
+            "statusText": "OK",
+            "headers": {
+              "access-control-expose-headers": "X-Request-ID",
+              "alt-svc": "h3=\":443\"; ma=86400",
+              "cf-cache-status": "DYNAMIC",
+              "cf-ray": "9d4782b50ef5a066-SIN",
+              "connection": "keep-alive",
+              "content-encoding": "br",
+              "content-type": "application/json",
+              "date": "Fri, 27 Feb 2026 11:58:30 GMT",
+              "openai-organization": "joblogic-6mep0p",
+              "openai-processing-ms": "1177",
+              "openai-project": "proj_XLAa8ODpwL0Tpms6TqAkDdxg",
+              "openai-version": "2020-10-01",
+              "server": "cloudflare",
+              "set-cookie": "__cf_bm=ZZKry3GUvoZ9G84xVCSiaSbNR1lXk3q1VrQnknNmze0-1772193508.650257-1.0.1.1-9Fe1wB0wLdXnnA56dT_gEGavK_ENDzSQhRwLc22pZrgpuEh7qkQZbgbAA73bV7fzEUvvt5IKrzBuKyYo.kvwCw.n3yGu4oLF5YDwu0Ea2p7AsmwLOeCGd9OC7ivR5ack; HttpOnly; Secure; Path=/; Domain=api.openai.com; Expires=Fri, 27 Feb 2026 12:28:30 GMT",
+              "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+              "transfer-encoding": "chunked",
+              "x-content-type-options": "nosniff",
+              "x-openai-proxy-wasm": "v0.1",
+              "x-ratelimit-limit-requests": "10000",
+              "x-ratelimit-limit-tokens": "30000000",
+              "x-ratelimit-remaining-requests": "9999",
+              "x-ratelimit-remaining-tokens": "29999246",
+              "x-ratelimit-reset-requests": "6ms",
+              "x-ratelimit-reset-tokens": "1ms",
+              "x-request-id": "req_896b8c7444ca4dc6952dd798a9f68c25"
+            }
+          },
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 8,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 6173,
+        "completion": 475,
+        "cached": 0,
+        "total": 6648,
+        "numRequests": 8,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0
+          }
+        }
+      },
+      "durationMs": 3663
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Joblogic Helpdesk Agent — Quality Evaluation Suite",
+    "prompts": [
+      "file://C:\\Users\\saifr\\Documents\\Joblogic Code\\Eval WebRTC\\server\\eval-prompt.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:gpt-4.1",
+        "config": {
+          "temperature": 0
+        }
+      }
+    ],
+    "tests": [
+      {
+        "description": "Professional Greeting & Introduction",
+        "vars": {
+          "criteria_name": "Professional Greeting",
+          "task": "Did Nova answer the call professionally, introduce themselves or the company (Joblogic), and clearly offer to help the caller?\n"
+        },
+        "assert": [
+          {
+            "type": "is-json"
+          },
+          {
+            "type": "javascript",
+            "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+          }
+        ]
+      },
+      {
+        "description": "Issue Description Captured",
+        "vars": {
+          "criteria_name": "Issue Description",
+          "task": "Did Nova successfully gather a clear and complete description of the maintenance issue being reported by the caller?\n"
+        },
+        "assert": [
+          {
+            "type": "is-json"
+          },
+          {
+            "type": "javascript",
+            "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+          }
+        ]
+      },
+      {
+        "description": "Site & Location Captured",
+        "vars": {
+          "criteria_name": "Site & Location",
+          "task": "Did Nova obtain the site name and/or address where the maintenance issue is occurring?\n"
+        },
+        "assert": [
+          {
+            "type": "is-json"
+          },
+          {
+            "type": "javascript",
+            "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+          }
+        ]
+      },
+      {
+        "description": "Caller Contact Details Captured",
+        "vars": {
+          "criteria_name": "Contact Details",
+          "task": "Did Nova capture the caller's full name and contact phone number (or email) during the call?\n"
+        },
+        "assert": [
+          {
+            "type": "is-json"
+          },
+          {
+            "type": "javascript",
+            "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+          }
+        ]
+      },
+      {
+        "description": "Priority Assessment",
+        "vars": {
+          "criteria_name": "Priority Assessment",
+          "task": "Did Nova assess and confirm the urgency or priority level of the reported issue (e.g. Emergency / High / Medium / Low)?\n"
+        },
+        "assert": [
+          {
+            "type": "is-json"
+          },
+          {
+            "type": "javascript",
+            "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+          }
+        ]
+      },
+      {
+        "description": "Details Confirmation",
+        "vars": {
+          "criteria_name": "Details Confirmation",
+          "task": "Did Nova read back or confirm all the captured details (caller name, site, issue, priority) to the caller before closing the call?\n"
+        },
+        "assert": [
+          {
+            "type": "is-json"
+          },
+          {
+            "type": "javascript",
+            "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+          }
+        ]
+      },
+      {
+        "description": "Job Reference Number Provided",
+        "vars": {
+          "criteria_name": "Job Reference",
+          "task": "Did Nova confirm the job has been logged and provide a job reference number (format JL-XXXXX or similar) to the caller?\n"
+        },
+        "assert": [
+          {
+            "type": "is-json"
+          },
+          {
+            "type": "javascript",
+            "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+          }
+        ]
+      },
+      {
+        "description": "Overall Call Quality",
+        "vars": {
+          "criteria_name": "Overall Quality",
+          "task": "Evaluate the overall call quality across professionalism, tone, empathy, efficiency, and whether the caller's issue was fully resolved by end of the call.\n"
+        },
+        "assert": [
+          {
+            "type": "is-json"
+          },
+          {
+            "type": "javascript",
+            "value": "const r = JSON.parse(output);\nreturn r.score >= 7 ? true : `Score ${r.score}/10 — ${r.reasoning}`;\n"
+          }
+        ]
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "defaultTest": {
+      "vars": {
+        "transcript": "file://Output/transcript.txt"
+      },
+      "options": {
+        "provider": "openai:gpt-4.1"
+      },
+      "assert": [],
+      "metadata": {}
+    },
+    "outputPath": [
+      "Output\\.promptfoo-raw.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {}
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.120.19",
+    "nodeVersion": "v22.20.0",
+    "platform": "win32",
+    "arch": "x64",
+    "exportedAt": "2026-02-27T11:58:30.160Z",
+    "evaluationCreatedAt": "2026-02-27T11:58:26.370Z"
+  }
+}

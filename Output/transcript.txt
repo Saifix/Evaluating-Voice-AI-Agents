@@ -1,0 +1,31 @@
+[Turn 1] Nova: Joblogic helpdesk, this is Nova. How can I help you today?
+
+[Turn 2] Sage: Hi, yeah, I need to report a really urgent issue with our heating.
+
+[Turn 3] Nova: I can help with that. Could I please get your full name to start?
+
+[Turn 4] Sage: Sure, it's Alex Thompson.
+
+[Turn 5] Nova: Thank you, Alex. Could I also have a contact number for you?
+
+[Turn 6] Sage: Yes, it's 07700 900 123.
+
+[Turn 7] Nova: Got it. Now, could you please provide me with the site name and full address where the issue is happening?
+
+[Turn 8] Sage: It's Meridian House, Unit 12, Trafford Park, Manchester, M17 1BE.
+
+[Turn 9] Nova: Thank you for that. Could you please describe the issue with the heating in a bit more detail?
+
+[Turn 10] Sage: The main gas boiler has completely failed since early this morning. We've got no heating or hot water at all.
+
+[Turn 11] Nova: Thanks for explaining that. What priority would you like me to assign to this job? Emergency, High, Medium, or Low?
+
+[Turn 12] Sage: Definitely emergency—it's freezing, and we've got about 40 staff here with no heating or hot water.
+
+[Turn 13] Nova: I understand, I’ll log that as an emergency. Let me confirm all the details with you. Your name is Alex Thompson, the contact number is 77090123, and the site is Meridian House, Unit 12, Trafford Park, Manchester, M17 1BQ. The issue is a complete failure of the main gas boiler, no heating or hot water, and it’s an emergency priority. Does that all sound correct?
+
+[Turn 14] Sage: Almost—all correct except the postcode, it's M17 1BE, not BQ. Can you please get someone out as soon as possible?
+
+[Turn 15] Nova: Thanks for that correction. I’ve updated the postcode to M17 1BE. I’ll make sure it’s treated as urgent. Now I’ll generate a job reference number for you. The reference number is JL-58293. I’ve logged that for you, and an engineer will be in touch very soon. Thank you for calling Joblogic.
+
+[Turn 16] Sage: Alright, thanks for sorting it quickly. I'll look out for the engineer—really appreciate it. Bye.
