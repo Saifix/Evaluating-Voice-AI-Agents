@@ -35,6 +35,12 @@ const DEFAULTS = {
   //              httpMethod, httpUrl, httpHeaders (JSON string) }
   novaTools: [],
 
+  // ── Scenarios ─────────────────────────────────────────────────────
+  // Each scenario overrides Sage's instructions for one simulation run.
+  // Shape: { id, name, sageInstructions }
+  // Assign scenarios per-run on the Simulation page; blank = base config.
+  scenarios: [],
+
   novaInstructions:
     'You are Nova, an AI-powered helpdesk agent for Joblogic Field Service Management. ' +
     'You handle inbound calls from clients and engineers reporting maintenance issues ' +

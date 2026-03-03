@@ -91,9 +91,10 @@ app.post('/api/start', async (req, res) => {
     return res.status(409).json({ error: 'Already running' });
   }
 
-  const cfg       = config.getResolved();
-  const reqCount  = parseInt(req.body?.count) || cfg.simCount || 1;
-  const count     = Math.min(20, Math.max(1, reqCount));
+  const cfg          = config.getResolved();
+  const reqCount     = parseInt(req.body?.count) || cfg.simCount || 1;
+  const count        = Math.min(20, Math.max(1, reqCount));
+  const scenarioIds  = Array.isArray(req.body?.scenarioIds) ? req.body.scenarioIds : [];
   const sessionId = _nextSessionId();
 
   // Create session directory
@@ -119,12 +120,27 @@ app.post('/api/start', async (req, res) => {
     const runDir = path.join(runsBase, `run_${runNum}`);
     fs.mkdirSync(runDir, { recursive: true });
 
+    // Resolve scenario override for this run slot
+    const scenarioId = scenarioIds[i] || null;
+    const scenario   = scenarioId
+      ? (cfg.scenarios || []).find(s => s.id === scenarioId) || null
+      : null;
+
+    // Persist lightweight run metadata (scenario traceability)
+    fs.writeFileSync(path.join(runDir, 'run_meta.json'), JSON.stringify({
+      runNum,
+      scenarioId:   scenario?.id   || null,
+      scenarioName: scenario?.name || 'Base',
+    }), 'utf8');
+
     const runCfg = {
       ...cfg,
       novaPcPort: 3010 + i * 2,
       sagePcPort: 3011 + i * 2,
       outputDir:  runDir,
       runNum,
+      // Override Sage instructions when a scenario is assigned
+      ...(scenario ? { sageInstructions: scenario.sageInstructions } : {}),
     };
 
     const convo = new Conversation();

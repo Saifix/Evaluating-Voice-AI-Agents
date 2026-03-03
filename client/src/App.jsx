@@ -50,6 +50,8 @@ export default function App() {
   const [simTotal, setSimTotal]     = useState(1)
   const [simCompleted, setSimCompleted] = useState(0)
   const [currentSession, setCurrentSession] = useState(null)
+  const [scenarios, setScenarios]   = useState([])
+  const [scenarioAssignments, setScenarioAssignments] = useState([])
   const esRef        = useRef(null)
   const transcriptRef = useRef({})
 
@@ -58,6 +60,23 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme)
     try { localStorage.setItem('theme', theme) } catch { /* ignore */ }
   }, [theme])
+
+  // Re-fetch scenarios whenever the user opens the Simulation page
+  useEffect(() => {
+    if (page !== 'simulation') return
+    fetch('/api/config')
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d) setScenarios(d.scenarios || []) })
+      .catch(() => {})
+  }, [page])
+
+  // Auto-fill scenario assignments with round-robin whenever simCount or scenarios change
+  useEffect(() => {
+    if (!scenarios.length) { setScenarioAssignments([]); return }
+    setScenarioAssignments(
+      Array.from({ length: simCount }, (_, i) => scenarios[i % scenarios.length].id)
+    )
+  }, [simCount, scenarios])
 
   const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark')
 
@@ -134,12 +153,12 @@ export default function App() {
     return () => esRef.current?.close()
   }, [connectSSE])
 
-  const handleStart = async (count = 1) => {
+  const handleStart = async (count = 1, assignments = []) => {
     setError(null); setTranscriptsPerRun({}); setAudioReady(false)
     const res = await fetch('/api/start', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ count }),
+      body: JSON.stringify({ count, scenarioIds: assignments }),
     })
     if (!res.ok) {
       const body = await res.json().catch(() => ({}))
@@ -241,6 +260,13 @@ export default function App() {
                 simCount={simCount}
                 onSimCountChange={setSimCount}
                 simProgress={phase === 'running' ? { completed: simCompleted, total: simTotal } : null}
+                scenarios={scenarios}
+                scenarioAssignments={scenarioAssignments}
+                onScenarioChange={(i, id) => setScenarioAssignments(prev => {
+                  const next = [...prev]
+                  next[i] = id
+                  return next
+                })}
               />
               {error && <div className="error-banner">{error}</div>}
 

@@ -29,6 +29,17 @@ export default function SettingsPanel() {
   })
 
   // Persist criteria to server immediately (silent — main Save still works for all other fields)
+  const autoSaveScenarios = async (updatedScenarios) => {
+    const base = formRef.current || {}
+    try {
+      await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...base, scenarios: updatedScenarios }),
+      })
+    } catch { /* silent */ }
+  }
+
   const autoSaveCriteria = async (updatedCriteria) => {
     const base = formRef.current || {}
     try {
@@ -48,6 +59,27 @@ export default function SettingsPanel() {
     // Debounced auto-save so rapid typing doesn't spam the server
     clearTimeout(autoSaveTimer.current)
     autoSaveTimer.current = setTimeout(() => autoSaveCriteria(updated), 800)
+  }
+
+  const updateScenario = (idx, field, value) => {
+    const updated = [...(form.scenarios || [])]
+    updated[idx] = { ...updated[idx], [field]: value }
+    set('scenarios', updated)
+    clearTimeout(autoSaveTimer.current)
+    autoSaveTimer.current = setTimeout(() => autoSaveScenarios(updated), 800)
+  }
+
+  const addScenario = () => {
+    const id = `sc_${Date.now()}`
+    const updated = [...(form.scenarios || []), { id, name: '', sageInstructions: '' }]
+    set('scenarios', updated)
+    autoSaveScenarios(updated)
+  }
+
+  const removeScenario = (idx) => {
+    const updated = (form.scenarios || []).filter((_, i) => i !== idx)
+    set('scenarios', updated)
+    autoSaveScenarios(updated)
   }
 
   const addCriterion = () => {
@@ -179,6 +211,46 @@ export default function SettingsPanel() {
 
         <button type="button" className="btn btn-secondary criteria-add-btn" onClick={addCriterion}>
           + Add Criterion
+        </button>
+      </section>
+
+      {/* Scenarios */}
+      <section className="settings-section">
+        <h2 className="settings-section-title">Scenarios</h2>
+        <p className="field-hint" style={{ marginBottom: 16 }}>
+          Each scenario gives Sage a different caller persona and problem to report.
+          Assign scenarios to individual simulation runs on the Simulation page.
+          Leave a run unassigned to use the base Sage instructions below.
+        </p>
+
+        <div className="criteria-editor-list">
+          {(form.scenarios || []).map((s, idx) => (
+            <div key={s.id || idx} className="criteria-editor-item">
+              <div className="criteria-editor-header">
+                <input
+                  className="field-input criteria-name-input"
+                  placeholder="Scenario name (e.g. Gas Boiler Fault)"
+                  value={s.name || ''}
+                  onChange={e => updateScenario(idx, 'name', e.target.value)}
+                />
+                <button type="button" className="btn-icon btn-icon--danger"
+                  onClick={() => removeScenario(idx)} title="Remove scenario">
+                  <Icon name="x" size="sm" />
+                </button>
+              </div>
+              <textarea
+                className="field-textarea"
+                rows={6}
+                placeholder="Sage's caller instructions for this scenario. Use MAX_EXCHANGES as placeholder for the exchange count."
+                value={s.sageInstructions || ''}
+                onChange={e => updateScenario(idx, 'sageInstructions', e.target.value)}
+              />
+            </div>
+          ))}
+        </div>
+
+        <button type="button" className="btn btn-secondary criteria-add-btn" onClick={addScenario}>
+          + Add Scenario
         </button>
       </section>
 

@@ -669,6 +669,32 @@ body {
   font-size: 0.75rem; color: var(--muted); white-space: nowrap;
 }
 
+/* ── Scenario-per-run assignment grid (ControlBar) ────────────────────────── */
+.scenario-assign-wrap {
+  margin-top: 14px; padding: 12px 14px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.scenario-assign-heading {
+  font-size: 0.72rem; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px;
+}
+.scenario-assign-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+.scenario-assign-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.scenario-run-label {
+  font-size: 0.78rem; font-weight: 600; color: var(--text2);
+  white-space: nowrap; min-width: 42px;
+}
+.field-select--compact {
+  flex: 1; padding: 5px 8px; font-size: 0.78rem; min-width: 0;
+}
+
 /* ── Run selector (EvalReport) ────────────────────────────────────────────── */
 .run-selector {
   display: flex; align-items: center; gap: 10px;
